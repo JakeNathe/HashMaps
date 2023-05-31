@@ -3,7 +3,7 @@
 # Course: CS261 - Data Structures
 # Assignment: 6
 # Due Date: 6/12/2023
-# Description: A hash table utilizing a dynamic array which uses singly linked lists for collisions.
+# Description: A hash map utilizing a dynamic array which uses singly linked lists for collisions.
 
 
 from a6_include import (DynamicArray, LinkedList,
@@ -90,7 +90,7 @@ class HashMap:
 
     def put(self, key: str, value: object) -> None:
         """
-        Adds the key:value pair to the hash table. If the key already exists then it's value will be replaced.
+        Adds the key:value pair to the hash map. If the key already exists then it's value will be replaced.
         Updates capacity if needed.
         """
 
@@ -135,7 +135,7 @@ class HashMap:
 
     def clear(self) -> None:
         """
-        Clears the contents of the hash table. Keeps capacity.
+        Clears the contents of the hash map. Keeps capacity.
         """
         self._buckets = DynamicArray()
         for _ in range(self._capacity):
@@ -144,19 +144,30 @@ class HashMap:
 
     def resize_table(self, new_capacity: int) -> None:
         """
-        TODO: Write this implementation
+        Resizes the table if the load gets to 1.0 or over. Copies over existing key:value
+        pairs to the new larger table.
         """
         pass
 
     def get(self, key: str):
         """
-        TODO: Write this implementation
+        Returns the value related to the received key. Returns None if key in not
+        in the hash map.
         """
-        pass
+        # find index the key would be at
+        index = self._hash_function(key)
+        if self._capacity != 0:
+            index %= self._capacity
+
+        for node in self._buckets.get_at_index(index):
+            if node.key == key:
+                return node.value
+
+        return None
 
     def contains_key(self, key: str) -> bool:
         """
-        Returns true if the key is in the hash table.
+        Returns true if the key is in the hash map.
         """
         # find index the key would be at
         index = self._hash_function(key)
@@ -171,15 +182,30 @@ class HashMap:
 
     def remove(self, key: str) -> None:
         """
-        TODO: Write this implementation
+        Receives a key and removes the key:value pair from the hash map if it exists.
         """
-        pass
+        # find index the key would be at
+        index = self._hash_function(key)
+        if self._capacity != 0:
+            index %= self._capacity
+
+        for node in self._buckets.get_at_index(index):
+            if node.key == key:
+                self._buckets.get_at_index(index).remove(key)
+                self._size -= 1
 
     def get_keys_and_values(self) -> DynamicArray:
         """
-        TODO: Write this implementation
+        Returns an unordered dynamic array where each index contains a tuple of key:value pairs
+        stored in the hash map.
         """
-        pass
+        result = DynamicArray()
+
+        for index in range(self._capacity):
+            for node in self._buckets.get_at_index(index):
+                result.append((node.key, node.value))
+
+        return result
 
 
 def find_mode(da: DynamicArray) -> (DynamicArray, int):
