@@ -227,11 +227,32 @@ class HashMap:
 
 def find_mode(da: DynamicArray) -> (DynamicArray, int):
     """
-    TODO: Write this implementation
+    Receives an unsorted or sorted dynamic array and returns the mode(s) and frequency as a tuple: ([mode(s)], freq.
     """
-    # if you'd like to use a hash map,
-    # use this instance of your Separate Chaining HashMap
-    map = HashMap()
+    # create a hash map for the array
+    map = HashMap(da.length(), hash_function_1)
+    mode = DynamicArray()
+    freq = 0
+
+    # loop through array and check if hash map already contains the key. If so, inc value by 1
+    for index in range(da.length()):
+        key = da[index]
+        if map.contains_key(key):
+            value = map.get(key) + 1
+        else:
+            value = 1
+        # add key value pair to the hash map
+        map.put(key, value)
+        # if value is greater than max freq, replace the mode
+        if value > freq:
+            mode = DynamicArray()
+            mode.append(key)
+            freq = value
+        # if value is equal to max freq, add an additional mode
+        elif value == freq:
+            mode.append(key)
+
+    return tuple((mode, freq))
 
 
 # ------------------- BASIC TESTING ---------------------------------------- #
@@ -323,7 +344,7 @@ if __name__ == "__main__":
     m = HashMap(23, hash_function_1)
     m.put('key1', 10)
     print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
-    m.resize_table(30)
+    m.resize_table(1)
     print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
 
     print("\nPDF - resize example 2")
