@@ -93,15 +93,13 @@ class HashMap:
         Adds the key:value pair to the hash map. If the key already exists then it's value will be replaced.
         Updates capacity if needed.
         """
-
         # check if resize is needed
         if self.table_load() >= 1:
             self.resize_table(self._capacity * 2)
 
         # find index for the key
         index = self._hash_function(key)
-        if self._capacity != 0:
-            index %= self._capacity
+        index %= self._capacity
 
         # find bucket at corresponding index
         bucket = self._buckets.get_at_index(index)
@@ -147,7 +145,29 @@ class HashMap:
         Resizes the table if the load gets to 1.0 or over. Copies over existing key:value
         pairs to the new larger table.
         """
-        pass
+        if 1 > new_capacity:
+            return
+
+        # table must have a prime capacity
+        if self._is_prime(new_capacity) is False:
+            new_capacity = self._next_prime(new_capacity)
+
+        # create new empty buckets for the new capacity
+        new_buckets = DynamicArray()
+        for _ in range(new_capacity):
+            new_buckets.append(LinkedList())
+
+        # fill new buckets with key:value pairs after recomputing the index position for the new capacity
+        for index in range(self._capacity):
+            if self._buckets.get_at_index(index).length() != 0:
+                for node in self._buckets.get_at_index(index):
+                    new_index = self._hash_function(node.key)
+                    new_index %= new_capacity
+                    # set key:value pair at the new index value in the new buckets
+                    new_buckets.get_at_index(new_index).insert(node.key, node.value)
+
+        self._capacity = new_capacity
+        self._buckets = new_buckets
 
     def get(self, key: str):
         """
@@ -156,8 +176,7 @@ class HashMap:
         """
         # find index the key would be at
         index = self._hash_function(key)
-        if self._capacity != 0:
-            index %= self._capacity
+        index %= self._capacity
 
         for node in self._buckets.get_at_index(index):
             if node.key == key:
@@ -171,8 +190,7 @@ class HashMap:
         """
         # find index the key would be at
         index = self._hash_function(key)
-        if self._capacity != 0:
-            index %= self._capacity
+        index %= self._capacity
 
         for node in self._buckets.get_at_index(index):
             if node.key == key:
@@ -186,8 +204,7 @@ class HashMap:
         """
         # find index the key would be at
         index = self._hash_function(key)
-        if self._capacity != 0:
-            index %= self._capacity
+        index %= self._capacity
 
         for node in self._buckets.get_at_index(index):
             if node.key == key:
