@@ -3,7 +3,7 @@
 # Course: CS261 - Data Structures
 # Assignment: 6
 # Due Date: 6/12/2023
-# Description: A hash map ADT that uses singly linked lists for collisions.
+# Description: A hash table utilizing a dynamic array which uses singly linked lists for collisions.
 
 
 from a6_include import (DynamicArray, LinkedList,
@@ -90,27 +90,57 @@ class HashMap:
 
     def put(self, key: str, value: object) -> None:
         """
-        TODO: Write this implementation
+        Adds the key:value pair to the hash table. If the key already exists then it's value will be replaced.
+        Updates capacity if needed.
         """
-        pass
+
+        # check if resize is needed
+        if self.table_load() >= 1:
+            self.resize_table(self._capacity * 2)
+
+        # find index for the key
+        index = self._hash_function(key)
+        if self._capacity != 0:
+            index %= self._capacity
+
+        # find bucket at corresponding index
+        bucket = self._buckets.get_at_index(index)
+        # check if bucket already contains the key
+        duplicate = bucket.contains(key)
+
+        # check if key exists. Replace value
+        if duplicate is not None:
+            duplicate.value = value
+        else:
+            bucket.insert(key, value)
+            self._size += 1
 
     def empty_buckets(self) -> int:
         """
-        TODO: Write this implementation
+        Returns the number of empty buckets in the hash table.
         """
-        pass
+        empty_count = 0
+
+        for index in range(self._buckets.length()):
+            if self._buckets.get_at_index(index).length() == 0:
+                empty_count += 1
+
+        return empty_count
 
     def table_load(self) -> float:
         """
-        TODO: Write this implementation
+        Returns the current load factor of the hash table
         """
-        pass
+        return self._size / self._capacity
 
     def clear(self) -> None:
         """
-        TODO: Write this implementation
+        Clears the contents of the hash table. Keeps capacity.
         """
-        pass
+        self._buckets = DynamicArray()
+        for _ in range(self._capacity):
+            self._buckets.append(LinkedList())
+        self._size = 0
 
     def resize_table(self, new_capacity: int) -> None:
         """
@@ -126,9 +156,18 @@ class HashMap:
 
     def contains_key(self, key: str) -> bool:
         """
-        TODO: Write this implementation
+        Returns true if the key is in the hash table.
         """
-        pass
+        # find index the key would be at
+        index = self._hash_function(key)
+        if self._capacity != 0:
+            index %= self._capacity
+
+        for node in self._buckets.get_at_index(index):
+            if node.key == key:
+                return True
+
+        return False
 
     def remove(self, key: str) -> None:
         """
