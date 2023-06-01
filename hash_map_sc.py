@@ -95,7 +95,10 @@ class HashMap:
         """
         # check if resize is needed
         if self.table_load() >= 1:
-            self.resize_table(self._capacity * 2)
+            new_capacity = self._capacity * 2
+            if self._is_prime(new_capacity):
+                new_capacity = self._next_prime(new_capacity)
+            self.resize_table(new_capacity)
 
         # find index for the key
         index = self._hash_function(key)
@@ -145,12 +148,8 @@ class HashMap:
         Resizes the table if the load gets to 1.0 or over. Copies over existing key:value
         pairs to the new larger table.
         """
-
         if 1 > new_capacity:
             return
-        # capacity must be a prime number
-        if self._is_prime(new_capacity) is False:
-            new_capacity = self._next_prime(new_capacity)
 
         # temporary hash map with new capacity
         temp_map = HashMap(new_capacity, self._hash_function)
