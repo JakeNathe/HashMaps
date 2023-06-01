@@ -148,6 +148,8 @@ class HashMap:
         if 1 > new_capacity:
             return
         # capacity must be a prime number
+        while new_capacity < self._size:
+            new_capacity *= 2
         if self._is_prime(new_capacity) is False:
             new_capacity = self._next_prime(new_capacity)
 
@@ -162,7 +164,7 @@ class HashMap:
                 temp_map.put(node.key, node.value)
 
         # update actual map with new capacity and empty buckets
-        self._capacity = temp_map._capacity
+        self._capacity = new_capacity
         self._buckets = DynamicArray()
 
         # iterate over the buckets of temp map and insert into the actual map
@@ -344,7 +346,7 @@ if __name__ == "__main__":
     m = HashMap(23, hash_function_1)
     m.put('key1', 10)
     print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
-    m.resize_table(1)
+    m.resize_table(30)
     print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
 
     print("\nPDF - resize example 2")
