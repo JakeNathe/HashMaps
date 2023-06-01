@@ -109,6 +109,10 @@ class HashMap:
         """
         Adds the key:value pair to the hash map. Resizes if needed.
         """
+        # check if resize is needed
+        if self.table_load() > 0.5:
+            self.resize_table(self._capacity * 2)
+
         new_obj = HashEntry(key, value)
         hash_key = self._get_hash_key(key, self._capacity)
         index = self._buckets[hash_key]
@@ -121,10 +125,6 @@ class HashMap:
 
         self._buckets[hash_key] = new_obj
         self._size += 1
-
-        # check if resize is needed
-        if self.table_load() >= 0.5:
-            self.resize_table(self._capacity * 2)
 
     def table_load(self) -> float:
         """
