@@ -157,10 +157,9 @@ class HashMap:
         # iterate over the buckets of the current hash map
         for index in range(self._capacity):
             bucket = self._buckets.get_at_index(index)
-            if bucket.length() != 0:
-                for node in bucket:
-                    # insert key:value pairs into temp map
-                    temp_map.put(node.key, node.value)
+            for node in bucket:
+                # insert key:value pairs into temp map
+                temp_map.put(node.key, node.value)
 
         # update actual map with new capacity and empty buckets
         self._capacity = new_capacity
