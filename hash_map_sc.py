@@ -149,7 +149,7 @@ class HashMap:
             return
         # capacity must be a prime number
         if self.table_load() > 1:
-            self.resize_table(new_capacity * 2)
+            new_capacity = self._size
         if self._is_prime(new_capacity) is False:
             new_capacity = self._next_prime(new_capacity)
 
