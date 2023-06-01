@@ -102,7 +102,7 @@ class HashMap:
         hash_key %= self._capacity
 
         # find bucket at corresponding index
-        bucket = self._buckets.get_at_index(hash_key)
+        bucket = self._buckets[hash_key]
         # check if bucket already contains the key
         duplicate = bucket.contains(key)
 
@@ -120,7 +120,7 @@ class HashMap:
         empty_count = 0
 
         for index in range(self._buckets.length()):
-            if self._buckets.get_at_index(index).length() == 0:
+            if self._buckets[index].length() == 0:
                 empty_count += 1
 
         return empty_count
@@ -161,7 +161,7 @@ class HashMap:
 
         # iterate over the buckets of the current hash map
         for index in range(self._capacity):
-            bucket = self._buckets.get_at_index(index)
+            bucket = self._buckets[index]
             for node in bucket:
                 # insert key:value pairs into temp map
                 temp_map.put(node.key, node.value)
@@ -172,7 +172,7 @@ class HashMap:
 
         # iterate over the buckets of temp map and insert into the actual map
         for index in range(temp_map._capacity):
-            self._buckets.append(temp_map._buckets.get_at_index(index))
+            self._buckets.append(temp_map._buckets[index])
 
     def get(self, key: str):
         """
@@ -183,7 +183,7 @@ class HashMap:
         hash_key = self._hash_function(key)
         hash_key %= self._capacity
 
-        for node in self._buckets.get_at_index(hash_key):
+        for node in self._buckets[hash_key]:
             if node.key == key:
                 return node.value
 
@@ -197,7 +197,7 @@ class HashMap:
         hash_key = self._hash_function(key)
         hash_key %= self._capacity
 
-        for node in self._buckets.get_at_index(hash_key):
+        for node in self._buckets[hash_key]:
             if node.key == key:
                 return True
 
@@ -211,9 +211,9 @@ class HashMap:
         hash_key = self._hash_function(key)
         hash_key %= self._capacity
 
-        for node in self._buckets.get_at_index(hash_key):
+        for node in self._buckets[hash_key]:
             if node.key == key:
-                self._buckets.get_at_index(hash_key).remove(key)
+                self._buckets[hash_key].remove(key)
                 self._size -= 1
 
     def get_keys_and_values(self) -> DynamicArray:
@@ -224,7 +224,7 @@ class HashMap:
         result = DynamicArray()
 
         for index in range(self._capacity):
-            for node in self._buckets.get_at_index(index):
+            for node in self._buckets[index]:
                 result.append((node.key, node.value))
 
         return result
