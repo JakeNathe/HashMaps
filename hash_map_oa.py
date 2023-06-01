@@ -93,15 +93,20 @@ class HashMap:
 
     def table_load(self) -> float:
         """
-        TODO: Write this implementation
+        Returns the current table load factor
         """
-        pass
+        return self._size / self._capacity
 
     def empty_buckets(self) -> int:
         """
-        TODO: Write this implementation
+        Returns the amount of empty buckets in the hash table
         """
-        pass
+        empty_buckets = 0
+        for index in range(self._buckets.length()):
+            if self._buckets.get_at_index(index) is None:
+                empty_buckets += 1
+
+        return empty_buckets
 
     def resize_table(self, new_capacity: int) -> None:
         """
@@ -141,15 +146,22 @@ class HashMap:
 
     def __iter__(self):
         """
-        TODO: Write this implementation
+        Create iterator for loop
         """
-        pass
+        self._index = 0
+        return self
 
     def __next__(self):
         """
-        TODO: Write this implementation
+        Obtain the next value and advance interator
         """
-        pass
+        try:
+            value = self._buckets[self._index]
+        except DynamicArrayException:
+            raise StopIteration
+
+        self._index += 1
+        return value
 
 
 # ------------------- BASIC TESTING ---------------------------------------- #
