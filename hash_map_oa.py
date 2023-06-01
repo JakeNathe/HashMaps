@@ -92,14 +92,15 @@ class HashMap:
         hash_const = hash_key
         q_probing = 1
 
+        if self._buckets[hash_key] is None or self._buckets[hash_key].is_tombstone == True:
+            return hash_key
+
         while self._buckets[hash_key] is not None:
-            ## ???
-            if self._buckets[hash_key] is not None:
-                # return when key matches
-                if self._buckets[hash_key].key == key:
-                    return hash_key
+            # return when key matches
+            if self._buckets[hash_key].key == key:
+                return hash_key
             # update based on quadratic probing
-            hash_key = (hash_const + q_probing **2) % capacity
+            hash_key = (hash_const + q_probing ** 2) % capacity
             q_probing += 1
 
         return hash_key
@@ -137,16 +138,38 @@ class HashMap:
         """
         empty_buckets = 0
         for index in range(self._buckets.length()):
-            if self._buckets[index] is None:
+            if self._buckets[index] is None or self._buckets[index].is_tombstone:
                 empty_buckets += 1
 
         return empty_buckets
 
     def resize_table(self, new_capacity: int) -> None:
         """
-        TODO: Write this implementation
+        Resizes the hash table and rehashes all existing keyss.
         """
-        pass
+        if self._capacity > new_capacity:
+            return
+        # capacity must be a prime number
+        if self._is_prime(new_capacity) is False:
+            new_capacity = self._next_prime(new_capacity)
+
+        # new hash map with new capacity
+        updated_map = HashMap(new_capacity, self._hash_function)
+        # new_buckets = DynamicArray()
+        # updated_map._buckets = new_buckets
+        #
+        # # create empty buckets
+        # for _ in range(updated_map._capacity):
+        #     new_buckets.append(None)
+
+        # iterate over the buckets of temp map and insert into the actual map
+        for index in range(self._capacity):
+            hash_obj = self._buckets[index]
+            if hash_obj is not None and hash_obj.is_tombstone == False:
+                updated_map.put(hash_obj.key, hash_obj.value)
+
+        self._buckets = updated_map._buckets
+        self._capacity = updated_map._capacity
 
     def get(self, key: str) -> object:
         """
@@ -168,12 +191,10 @@ class HashMap:
         hash_key = self._get_hash_key(key, self._capacity)
         index = self._buckets[hash_key]
 
-        if index is None or index._is_tombstone is True:
+        if index is None or index.is_tombstone is True:
             return
         else:
-            # remove and replace with TS
-            index.key = None
-            index.value = None
+            # replace with TS
             index._is_tombstone = True
             self._size -= 1
             return
