@@ -98,11 +98,11 @@ class HashMap:
             self.resize_table(self._capacity * 2)
 
         # find index for the key
-        index = self._hash_function(key)
-        index %= self._capacity
+        hash_key = self._hash_function(key)
+        hash_key %= self._capacity
 
         # find bucket at corresponding index
-        bucket = self._buckets.get_at_index(index)
+        bucket = self._buckets.get_at_index(hash_key)
         # check if bucket already contains the key
         duplicate = bucket.contains(key)
 
@@ -180,10 +180,10 @@ class HashMap:
         in the hash map.
         """
         # find index the key would be at
-        index = self._hash_function(key)
-        index %= self._capacity
+        hash_key = self._hash_function(key)
+        hash_key %= self._capacity
 
-        for node in self._buckets.get_at_index(index):
+        for node in self._buckets.get_at_index(hash_key):
             if node.key == key:
                 return node.value
 
@@ -194,10 +194,10 @@ class HashMap:
         Returns true if the key is in the hash map.
         """
         # find index the key would be at
-        index = self._hash_function(key)
-        index %= self._capacity
+        hash_key = self._hash_function(key)
+        hash_key %= self._capacity
 
-        for node in self._buckets.get_at_index(index):
+        for node in self._buckets.get_at_index(hash_key):
             if node.key == key:
                 return True
 
@@ -208,12 +208,12 @@ class HashMap:
         Receives a key and removes the key:value pair from the hash map if it exists.
         """
         # find index the key would be at
-        index = self._hash_function(key)
-        index %= self._capacity
+        hash_key = self._hash_function(key)
+        hash_key %= self._capacity
 
-        for node in self._buckets.get_at_index(index):
+        for node in self._buckets.get_at_index(hash_key):
             if node.key == key:
-                self._buckets.get_at_index(index).remove(key)
+                self._buckets.get_at_index(hash_key).remove(key)
                 self._size -= 1
 
     def get_keys_and_values(self) -> DynamicArray:
