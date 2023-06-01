@@ -109,13 +109,13 @@ class HashMap:
         """
         Adds the key:value pair to the hash map. Resizes if needed.
         """
-        new_obj = HashEntry(key, value)
-        hash_key = self._get_hash_key(key, self._capacity)
-        index = self._buckets[hash_key]
-
         # check if resize is needed
         if self.table_load() >= 0.5:
             self.resize_table(self._capacity * 2)
+
+        new_obj = HashEntry(key, value)
+        hash_key = self._get_hash_key(key, self._capacity)
+        index = self._buckets[hash_key]
 
         # replace value if key already exists
         if index is not None:
