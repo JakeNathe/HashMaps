@@ -147,34 +147,28 @@ class HashMap:
         """
         if 1 > new_capacity:
             return
-
-        # load factor must be less than 1
-        if new_capacity < self._size:
-            if self._is_prime(new_capacity) is True:
-                new_capacity *= 2
-            else:
-                new_capacity = self._size
-
-        # table must have a prime capacity
+        # capacity must be a prime number
         if self._is_prime(new_capacity) is False:
             new_capacity = self._next_prime(new_capacity)
 
-        # create new empty buckets for the new capacity
-        new_buckets = DynamicArray()
-        for _ in range(new_capacity):
-            new_buckets.append(LinkedList())
+        # temporary hash map with new capacity
+        temp_map = HashMap(new_capacity, self._hash_function)
 
-        # fill new buckets with key:value pairs after recomputing the index position for the new capacity
+        # iterate over the buckets of the current hash map
         for index in range(self._capacity):
-            if self._buckets.get_at_index(index).length() != 0:
-                for node in self._buckets.get_at_index(index):
-                    new_index = self._hash_function(node.key)
-                    new_index %= new_capacity
-                    # set key:value pair at the new index value in the new buckets
-                    new_buckets.get_at_index(new_index).insert(node.key, node.value)
+            bucket = self._buckets.get_at_index(index)
+            if bucket.length() != 0:
+                for node in bucket:
+                    # insert key:value pairs into temp map
+                    temp_map.put(node.key, node.value)
 
+        # update actual map with new capacity and empty buckets
         self._capacity = new_capacity
-        self._buckets = new_buckets
+        self._buckets = DynamicArray()
+
+        # iterate over the buckets of temp map and insert into the actual map
+        for index in range(temp_map._capacity):
+            self._buckets.append(temp_map._buckets.get_at_index(index))
 
     def get(self, key: str):
         """
