@@ -109,10 +109,6 @@ class HashMap:
         """
         Adds the key:value pair to the hash map. Resizes if needed.
         """
-        # check if resize is needed
-        if self.table_load() >= 0.5:
-            self.resize_table(self._capacity * 2)
-
         new_obj = HashEntry(key, value)
         hash_key = self._get_hash_key(key, self._capacity)
         index = self._buckets[hash_key]
@@ -125,6 +121,10 @@ class HashMap:
 
         self._buckets[hash_key] = new_obj
         self._size += 1
+
+        # check if resize is needed
+        if self.table_load() >= 0.5:
+            self.resize_table(self._capacity * 2)
 
     def table_load(self) -> float:
         """
@@ -155,12 +155,6 @@ class HashMap:
 
         # new hash map with new capacity
         updated_map = HashMap(new_capacity, self._hash_function)
-        # new_buckets = DynamicArray()
-        # updated_map._buckets = new_buckets
-        #
-        # # create empty buckets
-        # for _ in range(updated_map._capacity):
-        #     new_buckets.append(None)
 
         # iterate over the buckets of temp map and insert into the actual map
         for index in range(self._capacity):
@@ -302,7 +296,7 @@ if __name__ == "__main__":
     m = HashMap(20, hash_function_1)
     m.put('key1', 10)
     print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
-    m.resize_table(30)
+    m.resize_table(202)
     print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
 
     print("\nPDF - resize example 2")
