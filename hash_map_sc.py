@@ -149,12 +149,14 @@ class HashMap:
             return
 
         # load factor must be less than 1
-        # then make capacity to be the next prime number
         if new_capacity < self._size:
-            new_capacity = self._size + 1
-            new_capacity = self._next_prime(new_capacity)
+            if self._is_prime(new_capacity) is True:
+                new_capacity *= 2
+            else:
+                new_capacity = self._size
+
         # table must have a prime capacity
-        elif self._is_prime(new_capacity) is False:
+        if self._is_prime(new_capacity) is False:
             new_capacity = self._next_prime(new_capacity)
 
         # create new empty buckets for the new capacity
