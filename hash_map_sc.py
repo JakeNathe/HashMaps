@@ -145,11 +145,10 @@ class HashMap:
         Resizes the table if the load gets to 1.0 or over. Copies over existing key:value
         pairs to the new larger table.
         """
+
         if 1 > new_capacity:
             return
-        # table load must be less than 1 and capacity must be a prime number
-        # if new_capacity < self._size:
-        #     new_capacity = self._size + 1
+        # capacity must be a prime number
         if self._is_prime(new_capacity) is False:
             new_capacity = self._next_prime(new_capacity)
 
@@ -164,11 +163,11 @@ class HashMap:
                 temp_map.put(node.key, node.value)
 
         # update actual map with new capacity and empty buckets
-        self._capacity = new_capacity
+        self._capacity = temp_map._capacity
         self._buckets = DynamicArray()
 
         # iterate over the buckets of temp map and insert into the actual map
-        for index in range(self._capacity):
+        for index in range(temp_map._capacity):
             self._buckets.append(temp_map._buckets.get_at_index(index))
 
     def get(self, key: str):
