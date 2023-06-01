@@ -85,11 +85,45 @@ class HashMap:
 
     # ------------------------------------------------------------------ #
 
+    def _get_hash_key (self, key: str, capacity: int) -> int:
+        """Helper function to calculate the hash key with quadratic probing."""
+        hash_key = self._hash_function(key)
+        hash_key %= self._capacity
+        hash_const = hash_key
+        q_probing = 1
+
+        while self._buckets[hash_key] is not None:
+            ## ???
+            if self._buckets[hash_key] is not None:
+                # return when key matches
+                if self._buckets[hash_key].key == key:
+                    return hash_key
+            # update based on quadratic probing
+            hash_key = (hash_const + q_probing **2) % capacity
+            q_probing += 1
+
+        return hash_key
+
     def put(self, key: str, value: object) -> None:
         """
-        TODO: Write this implementation
+        Adds the key:value pair to the hash map. Resizes if needed.
         """
-        pass
+        new_obj = HashEntry(key, value)
+        hash_key = self._get_hash_key(key, self._capacity)
+        index = self._buckets[hash_key]
+
+        # check if resize is needed
+        if self.table_load() >= 0.5:
+            self.resize_table(self._capacity * 2)
+
+        # replace value if key already exists
+        if index is not None:
+            if index.key == key:
+                index.value = value
+                return
+
+        self._buckets[hash_key] = new_obj
+        self._size += 1
 
     def table_load(self) -> float:
         """
@@ -103,7 +137,7 @@ class HashMap:
         """
         empty_buckets = 0
         for index in range(self._buckets.length()):
-            if self._buckets.get_at_index(index) is None:
+            if self._buckets[index] is None:
                 empty_buckets += 1
 
         return empty_buckets
@@ -128,15 +162,33 @@ class HashMap:
 
     def remove(self, key: str) -> None:
         """
-        TODO: Write this implementation
+        Removes the key from the hash map if it exists.
         """
-        pass
+        # find index the key would be at
+        hash_key = self._get_hash_key(key, self._capacity)
+        index = self._buckets[hash_key]
+
+        if index is None or index._is_tombstone is True:
+            return
+        else:
+            # remove and replace with TS
+            index.key = None
+            index.value = None
+            index._is_tombstone = True
+            self._size -= 1
+            return
 
     def clear(self) -> None:
         """
-        TODO: Write this implementation
+        Clears contents of the hash map. Capacity is not changed.
         """
-        pass
+        empty_buckets = DynamicArray()
+
+        for _ in range(self._capacity):
+            empty_buckets.append(None)
+
+        self._buckets = empty_buckets
+        self._size = 0
 
     def get_keys_and_values(self) -> DynamicArray:
         """
