@@ -151,6 +151,10 @@ class HashMap:
         if self._is_prime(new_capacity) is False:
             new_capacity = self._next_prime(new_capacity)
 
+        while new_capacity < self._size:
+            new_capacity *= 2
+            new_capacity = self._next_prime(new_capacity)
+
         # temporary hash map with new capacity
         temp_map = HashMap(new_capacity, self._hash_function)
 
