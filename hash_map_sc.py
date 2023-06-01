@@ -151,6 +151,7 @@ class HashMap:
         if self._is_prime(new_capacity) is False:
             new_capacity = self._next_prime(new_capacity)
 
+        # new capacity must be greater than current size. Resize until valid.
         while new_capacity < self._size:
             new_capacity *= 2
             new_capacity = self._next_prime(new_capacity)
