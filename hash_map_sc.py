@@ -148,8 +148,8 @@ class HashMap:
         if 1 > new_capacity:
             return
         # capacity must be a prime number
-        while new_capacity < self._size:
-            new_capacity *= 2
+        if new_capacity < self._size:
+            new_capacity = self._size + 1
         if self._is_prime(new_capacity) is False:
             new_capacity = self._next_prime(new_capacity)
 
