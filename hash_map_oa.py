@@ -88,15 +88,15 @@ class HashMap:
     def _get_hash_key (self, key: str, capacity: int) -> int:
         """Helper function to calculate the hash key with quadratic probing."""
         hash_key = self._hash_function(key)
-        hash_key %= self._capacity
+        hash_key %= capacity
         hash_const = hash_key
         q_probing = 1
 
-        if self._buckets[hash_key] is None or self._buckets[hash_key].is_tombstone == True:
+        if self._buckets[hash_key] is None or self._buckets[hash_key].is_tombstone is True:
             return hash_key
 
         while self._buckets[hash_key] is not None:
-            # return when key matches
+            # return if key matches to replace value
             if self._buckets[hash_key].key == key:
                 return hash_key
             # update based on quadratic probing
@@ -165,7 +165,7 @@ class HashMap:
         # iterate over the buckets of temp map and insert into the actual map
         for index in range(self._capacity):
             hash_obj = self._buckets[index]
-            if hash_obj is not None and hash_obj.is_tombstone == False:
+            if hash_obj is not None and hash_obj.is_tombstone is False:
                 updated_map.put(hash_obj.key, hash_obj.value)
 
         self._buckets = updated_map._buckets
