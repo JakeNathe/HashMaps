@@ -148,6 +148,9 @@ class HashMap:
         if 1 > new_capacity:
             return
 
+        if new_capacity < self._size:
+            new_capacity = self._size + 1
+
         # table must have a prime capacity
         if self._is_prime(new_capacity) is False:
             new_capacity = self._next_prime(new_capacity)
@@ -344,7 +347,7 @@ if __name__ == "__main__":
     m = HashMap(23, hash_function_1)
     m.put('key1', 10)
     print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
-    m.resize_table(1)
+    m.resize_table(30)
     print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
 
     print("\nPDF - resize example 2")
