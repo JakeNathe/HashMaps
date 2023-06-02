@@ -203,11 +203,12 @@ class HashMap:
         index = self._buckets[hash_key]
 
         if index is None or index.is_tombstone is True:
-            self._size -= 10
+            return
         else:
             # replace with TS
             index.is_tombstone = True
             self._size -= 1
+            self.resize_table(self._capacity)
             return
 
     def clear(self) -> None:
