@@ -221,13 +221,13 @@ class HashMap:
         hash_key = self._get_hash_key(key, self._capacity)
         index = self._buckets[hash_key]
 
-        if index is None or index.is_tombstone is True:
-            return
-        else:
+        if index is not None and index.is_tombstone is False:
             # replace with TS
-            index.is_tombstone = True
+            self._buckets.get_at_index(hash_key).is_tombstone = True
             self._size -= 1
             return
+
+        return
 
     def clear(self) -> None:
         """
@@ -268,7 +268,7 @@ class HashMap:
         """
         try:
             value = self._buckets[self._index]
-            while value is None:
+            while value is None or value.is_tombstone:
                 self._index += 1
                 value = self._buckets[self._index]
         except DynamicArrayException:
