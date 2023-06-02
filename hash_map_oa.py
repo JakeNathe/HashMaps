@@ -145,7 +145,7 @@ class HashMap:
 
     def resize_table(self, new_capacity: int) -> None:
         """
-        Resizes the hash table and rehashes all existing keyss.
+        Resizes the hash table and rehashes all existing keys.
         """
         if self._size > new_capacity:
             return
@@ -203,7 +203,7 @@ class HashMap:
         index = self._buckets[hash_key]
 
         if index is None or index.is_tombstone is True:
-            return
+            self._size -= 10
         else:
             # replace with TS
             index.is_tombstone = True
