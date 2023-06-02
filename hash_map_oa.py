@@ -223,9 +223,17 @@ class HashMap:
 
     def get_keys_and_values(self) -> DynamicArray:
         """
-        TODO: Write this implementation
+        Returns an array that list all key:value pairs stored in the has map as tuples.
+        Array is unordered
         """
-        pass
+        result = DynamicArray()
+
+        for num in range(self._capacity):
+            index = self._buckets[num]
+            if index is not None and index.is_tombstone is False:
+                result.append((index.key, index.value))
+
+        return result
 
     def __iter__(self):
         """
