@@ -152,12 +152,11 @@ class HashMap:
 
         # new hash map with new capacity
         updated_map = HashMap(new_capacity, self._hash_function)
+        updated_map._capacity = new_capacity
 
         # capacity must be a prime number
         if self._is_prime(new_capacity) is False:
             new_capacity = self._next_prime(new_capacity)
-
-
 
         # iterate over the buckets of temp map and insert into the actual map
         for index in range(self._capacity):
@@ -407,7 +406,7 @@ if __name__ == "__main__":
     print(m.get('key1'))
     m.put('key101', 10)
     m.put('key210', 10)
-    m.remove('key627')
+    m.remove('key210')
     print(m.get('key627'))
     m.remove('key593')
 
