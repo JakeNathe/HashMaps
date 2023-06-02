@@ -154,36 +154,39 @@ class HashMap:
         if self._is_prime(new_capacity) is False:
             new_capacity = self._next_prime(new_capacity)
 
-        old_buckets = self._buckets
-        old_capacity = self._capacity
-        self._capacity = new_capacity
-        self._buckets = DynamicArray()
-
-        for i in range(self._capacity):
-            self._buckets.append(None)
-        self._size = 0
-
-        for i in range(old_capacity):
-            index = old_buckets[i]
-            if index is not None and index.is_tombstone is False:
-                self.put(index.key, index.value)
-
-
-        # # new hash map with new capacity
-        # updated_map = HashMap(new_capacity, self._hash_function)
+        # old_buckets = self._buckets
+        # old_capacity = self._capacity
+        # self._capacity = new_capacity
+        # self._buckets = DynamicArray()
         #
-        # # capacity must be a prime number
-        # if self._is_prime(new_capacity) is False:
-        #     new_capacity = self._next_prime(new_capacity)
+        # for i in range(self._capacity):
+        #     self._buckets.append(None)
+        # self._size = 0
+        #
+        # for i in range(old_capacity):
+        #     index = old_buckets[i]
+        #     if index is not None and index.is_tombstone is False:
+        #         self.put(index.key, index.value)
+
+
+        # new hash map with new capacity
+        updated_map = HashMap(new_capacity, self._hash_function)
+
+        # capacity must be a prime number
+        if self._is_prime(new_capacity) is False:
+            new_capacity = self._next_prime(new_capacity)
+
+        old_cap = self._capacity
+        self._capacity = updated_map._capacity
 
         # iterate over the buckets of temp map and insert into the actual map
-        # for index in range(self._capacity):
-        #     hash_obj = self._buckets[index]
-        #     if hash_obj is not None and hash_obj.is_tombstone is False:
-        #         updated_map.put(hash_obj.key, hash_obj.value)
-        #
-        # self._buckets = updated_map._buckets
-        # self._capacity = updated_map._capacity
+        for index in range(old_cap):
+            hash_obj = self._buckets[index]
+            if hash_obj is not None and hash_obj.is_tombstone is False:
+                updated_map.put(hash_obj.key, hash_obj.value)
+
+        self._buckets = updated_map._buckets
+
 
     def get(self, key: str) -> object:
         """
