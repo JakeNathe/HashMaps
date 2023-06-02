@@ -218,7 +218,7 @@ class HashMap:
         index = self._buckets[hash_key]
 
         if index is not None and index.is_tombstone is False:
-            replace with TS
+            # replace with TS
             self._buckets.get_at_index(hash_key).is_tombstone = True
             self._size -= 1
 
