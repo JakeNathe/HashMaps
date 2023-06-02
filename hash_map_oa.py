@@ -150,10 +150,6 @@ class HashMap:
         if self._size > new_capacity:
             return
 
-        # capacity must be a prime number
-        if self._is_prime(new_capacity) is False:
-            new_capacity = self._next_prime(new_capacity)
-
         # old_buckets = self._buckets
         # old_capacity = self._capacity
         # self._capacity = new_capacity
@@ -172,21 +168,18 @@ class HashMap:
         # new hash map with new capacity
         updated_map = HashMap(new_capacity, self._hash_function)
 
-        # capacity must be a prime number
-        if self._is_prime(new_capacity) is False:
-            new_capacity = self._next_prime(new_capacity)
-
-        old_cap = self._capacity
-        self._capacity = updated_map._capacity
+        # # capacity must be a prime number
+        # if self._is_prime(new_capacity) is False:
+        #     new_capacity = self._next_prime(new_capacity)
 
         # iterate over the buckets of temp map and insert into the actual map
-        for index in range(old_cap):
+        for index in range(self._capacity):
             hash_obj = self._buckets[index]
             if hash_obj is not None and hash_obj.is_tombstone is False:
                 updated_map.put(hash_obj.key, hash_obj.value)
 
         self._buckets = updated_map._buckets
-
+        self._capacity = updated_map._capacity
 
     def get(self, key: str) -> object:
         """
