@@ -149,12 +149,15 @@ class HashMap:
         """
         if self._size > new_capacity:
             return
+
+        # new hash map with new capacity
+        updated_map = HashMap(new_capacity, self._hash_function)
+
         # capacity must be a prime number
         if self._is_prime(new_capacity) is False:
             new_capacity = self._next_prime(new_capacity)
 
-        # new hash map with new capacity
-        updated_map = HashMap(new_capacity, self._hash_function)
+
 
         # iterate over the buckets of temp map and insert into the actual map
         for index in range(self._capacity):
@@ -400,13 +403,13 @@ if __name__ == "__main__":
 
     print("\nPDF - remove example 1")
     print("----------------------")
-    m = HashMap(53, hash_function_1)
+    m = HashMap(223, hash_function_1)
     print(m.get('key1'))
-    m.put('key1', 10)
-    print(m.get('key1'))
-    m.remove('key1')
-    print(m.get('key1'))
-    m.remove('key4')
+    m.put('key101', 10)
+    m.put('key210', 10)
+    m.remove('key627')
+    print(m.get('key627'))
+    m.remove('key593')
 
     print("\nPDF - clear example 1")
     print("---------------------")
