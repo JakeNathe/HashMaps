@@ -155,10 +155,6 @@ class HashMap:
 
         # new hash map with new capacity
         updated_map = HashMap(new_capacity, self._hash_function)
-        temp_buckets = DynamicArray
-        updated_map.buckets = temp_buckets
-        for index in range(updated_map._capacity):
-            temp_buckets.append(None)
 
         # iterate over the buckets of temp map and insert into the actual map
         for index in range(self._capacity):
