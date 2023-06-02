@@ -206,6 +206,7 @@ class HashMap:
         else:
             # replace with TS
             index.is_tombstone = True
+            self._size -= 1
             return
 
     def clear(self) -> None:
