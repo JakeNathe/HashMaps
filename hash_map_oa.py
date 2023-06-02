@@ -110,7 +110,7 @@ class HashMap:
         Adds the key:value pair to the hash map. Resizes if needed.
         """
         # check if resize is needed
-        if self.table_load() > 0.5:
+        if self.table_load() >= 0.5:
             self.resize_table(self._capacity * 2)
 
         new_obj = HashEntry(key, value)
@@ -167,15 +167,27 @@ class HashMap:
 
     def get(self, key: str) -> object:
         """
-        TODO: Write this implementation
+        Checks if key is in hash map. If so, returns the value associated with the key
         """
-        pass
+        hash_key = self._get_hash_key(key, self._capacity)
+        index = self._buckets[hash_key]
+
+        if index.key == key and index.is_tombstone is False:
+            return index.value
+        else:
+            return None
 
     def contains_key(self, key: str) -> bool:
         """
-        TODO: Write this implementation
+        Checks if hash map contains the key, if so returns True.
         """
-        pass
+        hash_key = self._get_hash_key(key, self._capacity)
+        index = self._buckets[hash_key]
+
+        if index.key == key and index.is_tombstone is False:
+            return True
+        else:
+            return False
 
     def remove(self, key: str) -> None:
         """
@@ -189,7 +201,7 @@ class HashMap:
             return
         else:
             # replace with TS
-            index._is_tombstone = True
+            index.is_tombstone = True
             self._size -= 1
             return
 
