@@ -147,7 +147,7 @@ class HashMap:
         """
         Resizes the hash table and rehashes all existing keyss.
         """
-        if self._capacity > new_capacity:
+        if self._size > new_capacity:
             return
         # capacity must be a prime number
         if self._is_prime(new_capacity) is False:
@@ -172,7 +172,9 @@ class HashMap:
         hash_key = self._get_hash_key(key, self._capacity)
         index = self._buckets[hash_key]
 
-        if index.key == key and index.is_tombstone is False:
+        if index is None or index.is_tombstone is True:
+            return None
+        elif index.key == key and index.is_tombstone is False:
             return index.value
         else:
             return None
@@ -184,7 +186,9 @@ class HashMap:
         hash_key = self._get_hash_key(key, self._capacity)
         index = self._buckets[hash_key]
 
-        if index.key == key and index.is_tombstone is False:
+        if index is None or index.is_tombstone is True:
+            return False
+        elif index.key == key and index.is_tombstone is False:
             return True
         else:
             return False
@@ -308,7 +312,7 @@ if __name__ == "__main__":
     m = HashMap(20, hash_function_1)
     m.put('key1', 10)
     print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
-    m.resize_table(202)
+    m.resize_table(30)
     print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
 
     print("\nPDF - resize example 2")
