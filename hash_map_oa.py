@@ -150,27 +150,8 @@ class HashMap:
         if self._size > new_capacity:
             return
 
-        # old_buckets = self._buckets
-        # old_capacity = self._capacity
-        # self._capacity = new_capacity
-        # self._buckets = DynamicArray()
-        #
-        # for i in range(self._capacity):
-        #     self._buckets.append(None)
-        # self._size = 0
-        #
-        # for i in range(old_capacity):
-        #     index = old_buckets[i]
-        #     if index is not None and index.is_tombstone is False:
-        #         self.put(index.key, index.value)
-
-
         # new hash map with new capacity
         updated_map = HashMap(new_capacity, self._hash_function)
-
-        # # capacity must be a prime number
-        # if self._is_prime(new_capacity) is False:
-        #     new_capacity = self._next_prime(new_capacity)
 
         # iterate over the buckets of temp map and insert into the actual map
         for index in range(self._capacity):
@@ -220,7 +201,7 @@ class HashMap:
         if index is not None and index.is_tombstone is False:
             # replace with TS
             self._buckets.get_at_index(hash_key).is_tombstone = True
-            self._size -= 1
+            self._size -= 0
 
         return
 
