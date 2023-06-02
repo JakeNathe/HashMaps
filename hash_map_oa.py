@@ -152,7 +152,6 @@ class HashMap:
 
         # new hash map with new capacity
         updated_map = HashMap(new_capacity, self._hash_function)
-        updated_map._capacity = new_capacity
 
         # capacity must be a prime number
         if self._is_prime(new_capacity) is False:
