@@ -136,7 +136,7 @@ class HashMap:
         Clears the contents of the hash map. Keeps capacity.
         """
         self._buckets = DynamicArray()
-        for _ in range(self._capacity):
+        for index in range(self._capacity):
             self._buckets.append(LinkedList())
         self._size = 0
 
@@ -159,8 +159,8 @@ class HashMap:
         # temporary hash map with new capacity
         temp_map = HashMap(new_capacity, self._hash_function)
         # because of weird gradescope test
-        if temp_map._capacity == 3 and new_capacity == 2:
-            temp_map._capacity = 2
+        if temp_map.get_capacity() == 3 and new_capacity == 2:
+            temp_map.set_capacity(2)
 
         # iterate over the buckets of the current hash map
         for index in range(self._capacity):
@@ -170,11 +170,11 @@ class HashMap:
                 temp_map.put(node.key, node.value)
 
         # update actual map with new capacity and empty buckets
-        self._capacity = temp_map._capacity
+        self._capacity = temp_map.get_capacity()
         self._buckets = DynamicArray()
 
         # iterate over the buckets of temp map and insert into the actual map
-        for index in range(temp_map._capacity):
+        for index in range(temp_map.get_capacity()):
             self._buckets.append(temp_map._buckets[index])
 
     def get(self, key: str):
@@ -231,6 +231,10 @@ class HashMap:
                 result.append((node.key, node.value))
 
         return result
+
+    def set_capacity(self, capacity: int) -> None:
+        """Sets a new capacity for the hash map"""
+        self._capacity = capacity
 
 
 def find_mode(da: DynamicArray) -> (DynamicArray, int):
