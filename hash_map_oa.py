@@ -92,8 +92,8 @@ class HashMap:
         hash_const = hash_key
         q_probing = 1
 
-        if self._buckets[hash_key] is None or self._buckets[hash_key].is_tombstone is True:
-            return hash_key
+        # if self._buckets[hash_key] is None or self._buckets[hash_key].is_tombstone is True:
+        #     return hash_key
 
         while self._buckets[hash_key] is not None:
             # return if key matches to replace value
@@ -320,8 +320,38 @@ if __name__ == "__main__":
 
     print("\nPDF - resize example 1")
     print("----------------------")
-    m = HashMap(20, hash_function_1)
-    m.put('key1', 10)
+    m = HashMap(53, hash_function_1)
+    m.put('key202', 10)
+    m.put('key330', 10)
+    m.put('key116', 10)
+    m.put('key414', 10)
+    m.put('key343', 10)
+    m.put('key51', 10)
+    m.put('key930', 10)
+    m.put('key616', 10)
+    m.put('key148', 10)
+    m.put('key167', 10)
+    m.put('key385', 10)
+    m.put('key75', 10)
+    m.put('key981', 10)
+    m.put('key658', 10)
+    m.put('key934', 10)
+    m.put('key94', 10)
+    m.put('key487', 10)
+    m.put('key161', 10)
+    m.put('key799', 10)
+    m.put('key263', 10)
+    m.put('key469', 10)
+    m.put('key74', 10)
+    m.put('key897', 10)
+    m.put('key413', 10)
+    m.put('key100', 10)
+    m._buckets[9].is_tombstone = True
+    m._buckets[13].is_tombstone = True
+    m._buckets[14].is_tombstone = True
+    m._buckets[15].is_tombstone = True
+    m._size = 21
+    m.remove('key148')
     print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
     m.resize_table(30)
     print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
