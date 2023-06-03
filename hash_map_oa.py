@@ -118,7 +118,7 @@ class HashMap:
         index = self._buckets[hash_key]
 
         # replace value if key already exists
-        if index is not None:
+        if index is not None and index.is_tombstone is True:
             if index.key == key:
                 index.value = value
                 return
