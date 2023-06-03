@@ -138,7 +138,7 @@ class HashMap:
         """
         empty_buckets = 0
         for index in range(self._buckets.length()):
-            if self._buckets[index] is None or self._buckets[index].is_tombstone:
+            if self._buckets[index] is None or self._buckets[index].is_tombstone is True:
                 empty_buckets += 1
 
         return empty_buckets
@@ -159,8 +159,8 @@ class HashMap:
             if hash_obj is not None and hash_obj.is_tombstone is False:
                 updated_map.put(hash_obj.key, hash_obj.value)
 
-        self._buckets = updated_map._buckets
-        self._capacity = updated_map._capacity
+        self._buckets = updated_map.get_buckets()
+        self._capacity = updated_map.get_capacity()
 
     def get(self, key: str) -> object:
         """
@@ -200,7 +200,7 @@ class HashMap:
 
         if index is not None and index.is_tombstone is False:
             # replace with TS
-            self._buckets.get_at_index(hash_key).is_tombstone = True
+            index.is_tombstone = True
             self._size -= 1
 
         return
@@ -211,7 +211,7 @@ class HashMap:
         """
         empty_buckets = DynamicArray()
 
-        for _ in range(self._capacity):
+        for index in range(self._capacity):
             empty_buckets.append(None)
 
         self._buckets = empty_buckets
@@ -230,6 +230,10 @@ class HashMap:
                 result.append((index.key, index.value))
 
         return result
+
+    def get_buckets(self) -> DynamicArray:
+        """Returns buckets for hash map"""
+        return self._buckets
 
     def __iter__(self):
         """
