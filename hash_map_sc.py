@@ -158,7 +158,7 @@ class HashMap:
 
         # temporary hash map with new capacity
         temp_map = HashMap(new_capacity, self._hash_function)
-        # because of weird gradescope test
+        # _next_prime method does not consider 2 a prime, and cannot edit _next_prime
         if temp_map.get_capacity() == 3 and new_capacity == 2:
             temp_map.set_capacity(2)
 
@@ -175,7 +175,7 @@ class HashMap:
 
         # iterate over the buckets of temp map and insert into the actual map
         for index in range(temp_map.get_capacity()):
-            self._buckets.append(temp_map._buckets[index])
+            self._buckets.append(temp_map.get_buckets()[index])
 
     def get(self, key: str):
         """
@@ -235,6 +235,10 @@ class HashMap:
     def set_capacity(self, capacity: int) -> None:
         """Sets a new capacity for the hash map"""
         self._capacity = capacity
+
+    def get_buckets(self) -> DynamicArray:
+        """Returns buckets in the hash map"""
+        return self._buckets
 
 
 def find_mode(da: DynamicArray) -> (DynamicArray, int):
