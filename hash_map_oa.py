@@ -92,9 +92,6 @@ class HashMap:
         hash_const = hash_key
         q_probing = 1
 
-        # if self._buckets[hash_key] is None or self._buckets[hash_key].is_tombstone is True:
-        #     return hash_key
-
         while self._buckets[hash_key] is not None:
             # return if key matches to replace value
             if self._buckets[hash_key].key == key:
