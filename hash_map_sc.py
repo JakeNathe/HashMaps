@@ -1,6 +1,6 @@
 # Description: A hash map utilizing a dynamic array which uses singly linked lists for collisions.
 
-from a6_include import (DynamicArray, LinkedList,
+from DS_include import (DynamicArray, LinkedList,
                         hash_function_1, hash_function_2)
 
 

@@ -1,6 +1,6 @@
 # Description: A hash map ADT that uses open addressing for collisions.
 
-from a6_include import (DynamicArray, DynamicArrayException, HashEntry,
+from DS_include import (DynamicArray, DynamicArrayException, HashEntry,
                         hash_function_1, hash_function_2)
 
 
